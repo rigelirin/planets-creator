@@ -17,6 +17,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# local AI assistant config (kept locally, not committed)
+CLAUDE.md
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json
