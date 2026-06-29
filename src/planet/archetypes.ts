@@ -142,6 +142,7 @@ const GAS_GIANT: Archetype = {
     emissiveStrength: 0.0,
     oceanEnabled: false, cloudsEnabled: false,
     atmosphereEnabled: true, atmosphereColor: '#e8c89a', atmosphereDensity: 1.5, atmospherePower: 3.0,
+    ringsEnabled: true, ringInnerColor: '#d8c7a0', ringOuterColor: '#8a7558', ringOpacity: 0.85, ringTilt: 18,
   },
 }
 

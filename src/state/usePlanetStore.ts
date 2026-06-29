@@ -80,6 +80,12 @@ export type PlanetParams = {
   atmosphereColor: string
   atmosphereDensity: number
   atmospherePower: number
+  // ring system
+  ringsEnabled: boolean
+  ringInnerColor: string
+  ringOuterColor: string
+  ringOpacity: number
+  ringTilt: number
   // scene
   autoRotate: boolean
 }
@@ -133,6 +139,11 @@ export const DEFAULT_PARAMS: PlanetParams = {
   atmosphereColor: '#5b8cff',
   atmosphereDensity: 1.1,
   atmospherePower: 3.2,
+  ringsEnabled: false,
+  ringInnerColor: '#cbb79a',
+  ringOuterColor: '#7d6c54',
+  ringOpacity: 0.85,
+  ringTilt: 20,
   autoRotate: true,
 }
 

@@ -9,6 +9,7 @@ import { TerrainSphere } from './TerrainSphere'
 import { WaterShell } from './WaterShell'
 import { CloudShell } from './CloudShell'
 import { AtmosphereShell } from './AtmosphereShell'
+import { RingShell } from './RingShell'
 import { CaptureRenderer } from './CaptureRenderer'
 
 const STAR_POS: [number, number, number] = [
@@ -22,6 +23,7 @@ export function PlanetCanvas() {
   const oceanEnabled = usePlanetStore((s) => s.params.oceanEnabled)
   const cloudsEnabled = usePlanetStore((s) => s.params.cloudsEnabled)
   const atmosphereEnabled = usePlanetStore((s) => s.params.atmosphereEnabled)
+  const ringsEnabled = usePlanetStore((s) => s.params.ringsEnabled)
 
   return (
     <Canvas
@@ -41,6 +43,7 @@ export function PlanetCanvas() {
       {oceanEnabled && <WaterShell />}
       {cloudsEnabled && <CloudShell />}
       {atmosphereEnabled && <AtmosphereShell />}
+      {ringsEnabled && <RingShell />}
 
       <Stars radius={80} depth={50} count={4000} factor={2.2} fade speed={0} />
       <OrbitControls enablePan={false} minDistance={1.3} maxDistance={10} enableDamping />

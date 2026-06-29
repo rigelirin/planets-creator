@@ -67,6 +67,11 @@ function levaFromParams(p: PlanetParams) {
     atmosphereColor: p.atmosphereColor,
     atmosphereDensity: p.atmosphereDensity,
     atmospherePower: p.atmospherePower,
+    ringsEnabled: p.ringsEnabled,
+    ringInnerColor: p.ringInnerColor,
+    ringOuterColor: p.ringOuterColor,
+    ringOpacity: p.ringOpacity,
+    ringTilt: p.ringTilt,
     autoRotate: p.autoRotate,
   }
 }
@@ -170,6 +175,16 @@ export function ControlPanel() {
       atmosphereDensity: { label: 'Density', value: params.atmosphereDensity, min: 0, max: 3, step: 0.05, onChange: num('atmosphereDensity') },
       atmospherePower: { label: 'Falloff', value: params.atmospherePower, min: 1, max: 8, step: 0.1, onChange: num('atmospherePower') },
     }),
+    Rings: folder(
+      {
+        ringsEnabled: { label: 'Enabled', value: params.ringsEnabled, onChange: bool('ringsEnabled') },
+        ringInnerColor: { label: 'Inner', value: params.ringInnerColor, onChange: str('ringInnerColor') },
+        ringOuterColor: { label: 'Outer', value: params.ringOuterColor, onChange: str('ringOuterColor') },
+        ringOpacity: { label: 'Opacity', value: params.ringOpacity, min: 0, max: 1, step: 0.01, onChange: num('ringOpacity') },
+        ringTilt: { label: 'Tilt', value: params.ringTilt, min: 0, max: 45, step: 1, onChange: num('ringTilt') },
+      },
+      { collapsed: true },
+    ),
     Scene: folder({
       autoRotate: { label: 'Auto-rotate', value: params.autoRotate, onChange: bool('autoRotate') },
     }),

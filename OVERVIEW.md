@@ -96,7 +96,8 @@ written to the URL hash (`#p=…`, debounced) and restored on load; **Copy link*
   too). Pick from the dropdown or the **preset gallery** (`src/ui/Gallery.tsx`), an
   overlay of palette-driven planet-disc previews.
 - **Live tuning** of terrain shape, elevation palette, climate (ice line), volcanic
-  glow, night-side **city lights**, and the ocean / cloud / atmosphere shells.
+  glow, night-side **city lights**, the ocean / cloud / atmosphere shells, and a
+  Saturn-like **ring system** (banded, tilted, with Cassini gaps).
 - **Seeded regeneration** — type or randomize a seed for a new world, each with a
   deterministic generated **name** (`src/planet/nameGen.ts`) used in export filenames.
 - **Randomize with locks** (`src/planet/randomize.ts`): re-roll within the current
@@ -107,8 +108,8 @@ written to the URL hash (`#p=…`, debounced) and restored on load; **Copy link*
   JSON presets.
 - **Model export** — textured PBR planet (albedo + normal + metallic-roughness +
   emissive) as **GLB / glTF / USDZ** (AR), or geometry-only **STL** (3D print) /
-  **OBJ**; volcanic worlds keep their glow, and clouds export as a separate
-  transparent layer.
+  **OBJ**; volcanic worlds keep their glow, and clouds + rings export as separate
+  transparent nodes.
 - **Screenshot** — save a PNG of the current view.
 - **Graceful fallbacks** — a WebGL-2 capability check and a render error boundary
   (`src/ui/ErrorBoundary.tsx`) instead of a blank screen; controls collapse on phones.

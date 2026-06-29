@@ -4,6 +4,7 @@ import {
   Camera,
   CanvasTexture,
   Color,
+  DoubleSide,
   Float32BufferAttribute,
   FloatType,
   Mesh,
@@ -12,21 +13,32 @@ import {
   PlaneGeometry,
   RepeatWrapping,
   RGBAFormat,
+  RingGeometry,
   Scene,
   ShaderMaterial,
   SRGBColorSpace,
   UnsignedByteType,
   Vector2,
+  Vector3,
   WebGLRenderTarget,
   type WebGLRenderer,
 } from 'three'
 import bakeVert from '@/gfx/shaders/bake.vert.glsl'
 import bakeFrag from '@/gfx/shaders/bake.frag.glsl'
 import cloudBakeFrag from '@/gfx/shaders/cloudBake.frag.glsl'
+import ringBakeFrag from '@/gfx/shaders/ringBake.frag.glsl'
+import { seedToOffset } from '@/planet/seed'
 import { createTerrainUniforms } from '@/gfx/materials/createTerrainMaterial'
 import { applyTerrainParams } from '@/state/uniformsBridge'
 import type { PlanetParams } from '@/state/usePlanetStore'
-import { BASE_RADIUS, CLOUD_RADIUS_FACTOR, CLOUD_SCALE } from '@/constants'
+import {
+  BASE_RADIUS,
+  CLOUD_RADIUS_FACTOR,
+  CLOUD_SCALE,
+  RING_INNER_FACTOR,
+  RING_OUTER_FACTOR,
+  RING_THETA_SEGMENTS,
+} from '@/constants'
 
 export type BakeResolution = { texW: number; texH: number; rings: number; segments: number }
 
@@ -176,6 +188,61 @@ export function bakeCloudMesh(renderer: WebGLRenderer, params: PlanetParams): Me
   })
   const mesh = new Mesh(geo, material)
   mesh.name = 'clouds'
+  mesh.renderOrder = 1
+  return mesh
+}
+
+/** Ring bake texture resolution (square; the disc is centred in UV space). */
+const RING_TEX = 1024
+
+/**
+ * Bake the planetary ring as its own transparent node: a static radial band
+ * texture (the shared rings GLSL) on a RingGeometry tilted to match the live
+ * ring. Added to the export group when rings are enabled.
+ */
+export function bakeRingMesh(renderer: WebGLRenderer, params: PlanetParams): Mesh {
+  const inner = BASE_RADIUS * RING_INNER_FACTOR
+  const outer = BASE_RADIUS * RING_OUTER_FACTOR
+  const uniforms = {
+    uInnerRadius: { value: inner },
+    uOuterRadius: { value: outer },
+    uInnerColor: { value: new Color(params.ringInnerColor) },
+    uOuterColor: { value: new Color(params.ringOuterColor) },
+    uSeed: { value: seedToOffset(params.seed, new Vector3()) },
+  }
+  const mat = new ShaderMaterial({ vertexShader: bakeVert, fragmentShader: ringBakeFrag, uniforms })
+  const quad = new Mesh(new PlaneGeometry(2, 2), mat)
+  const scene = new Scene()
+  scene.add(quad)
+  const cam = new Camera()
+
+  const prevTarget = renderer.getRenderTarget()
+  const rt = new WebGLRenderTarget(RING_TEX, RING_TEX, { format: RGBAFormat, type: UnsignedByteType, depthBuffer: false })
+  renderer.setRenderTarget(rt)
+  renderer.render(scene, cam)
+  const buf = new Uint8Array(RING_TEX * RING_TEX * 4)
+  renderer.readRenderTargetPixels(rt, 0, 0, RING_TEX, RING_TEX, buf)
+  renderer.setRenderTarget(prevTarget)
+
+  rt.dispose()
+  mat.dispose()
+  quad.geometry.dispose()
+
+  const tex = bufferToCanvasTexture(buf, RING_TEX, RING_TEX, SRGBColorSpace)
+  const geo = new RingGeometry(inner, outer, RING_THETA_SEGMENTS, 1)
+  geo.rotateX(-Math.PI / 2) // lie in the equatorial plane, matching the live ring
+  const material = new MeshStandardMaterial({
+    map: tex,
+    transparent: true,
+    opacity: params.ringOpacity,
+    side: DoubleSide,
+    depthWrite: false,
+    roughness: 0.9,
+    metalness: 0.0,
+  })
+  const mesh = new Mesh(geo, material)
+  mesh.rotation.x = (params.ringTilt * Math.PI) / 180
+  mesh.name = 'rings'
   mesh.renderOrder = 1
   return mesh
 }

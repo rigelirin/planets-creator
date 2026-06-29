@@ -36,7 +36,7 @@ export async function runExport(): Promise<void> {
     await nextFrame()
     // Lazy-load the bake + exporter code so it stays out of the initial bundle.
     const [bake, exporters] = await Promise.all([import('./bakePlanet'), import('./exportGLB')])
-    const { BAKE_PRESETS, bakePlanetMesh, bakeCloudMesh } = bake
+    const { BAKE_PRESETS, bakePlanetMesh, bakeCloudMesh, bakeRingMesh } = bake
 
     setStatus('baking', 'Baking textures & mesh…')
     await nextFrame() // let the overlay paint before the heavy synchronous bake
@@ -51,6 +51,8 @@ export async function runExport(): Promise<void> {
     group.add(planet)
     // Clouds export as their own transparent node so the layer can be toggled.
     if (params.cloudsEnabled) group.add(bakeCloudMesh(renderer, params))
+    // The ring is its own tilted, transparent node (textured formats only).
+    if (params.ringsEnabled) group.add(bakeRingMesh(renderer, params))
 
     setStatus('baking', `Encoding ${format.toUpperCase()}…`)
     await nextFrame()

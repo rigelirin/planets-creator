@@ -21,5 +21,26 @@ export const CLOUD_SCALE = 4.2
 /** Atmosphere shell radius as a multiple of BASE_RADIUS. */
 export const ATMOSPHERE_RADIUS_FACTOR = 1.14
 
+/** Saturn-like ring system inner/outer radius, as multiples of BASE_RADIUS. */
+export const RING_INNER_FACTOR = 1.3
+export const RING_OUTER_FACTOR = 2.3
+
+/**
+ * Azimuthal tessellation of the ring disc. The concentric radial bands are a
+ * fragment-shader effect (radius = length(worldPos)), so a single radial
+ * segment is geometrically exact; only the circle needs to be smooth.
+ */
+export const RING_THETA_SEGMENTS = 256
+
+/** Default ring-plane tilt away from the equatorial (edge-on) plane, in degrees. */
+export const RING_DEFAULT_TILT_DEG = 20
+
+/**
+ * Optional slow azimuthal drift of the ring plane (rad/s). 0 keeps the ring
+ * static. Radial bands are rotationally symmetric, so this is only visible if
+ * the shader adds seed-varied azimuthal detail.
+ */
+export const RING_SPIN_SPEED = 0
+
 /** Initial camera distance from planet center. */
 export const CAMERA_DISTANCE = 3.2

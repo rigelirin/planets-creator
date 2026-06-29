@@ -86,6 +86,11 @@ export function randomize(locks: Locks): PlanetParams {
     next.emissiveStrength = base.emissiveStrength > 0
       ? jnum(rng, base.emissiveStrength, 0.3, 0.8, 2.4)
       : 0
+    // Ring appearance jitters; ringsEnabled stays an archetype trait (like the shells).
+    next.ringTilt = jnum(rng, base.ringTilt, 8, 0, 45)
+    next.ringOpacity = jnum(rng, base.ringOpacity, 0.12, 0.4, 1)
+    next.ringInnerColor = jcol(rng, base.ringInnerColor, 0.03, 0.1, 0.06)
+    next.ringOuterColor = jcol(rng, base.ringOuterColor, 0.03, 0.1, 0.06)
   }
 
   usePlanetStore.getState().setParams(next)

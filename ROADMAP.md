@@ -27,6 +27,9 @@ Legend: **[x]** done · **[ ]** not yet.
   **lock groups**.
 - [x] **URL-hash sharing** (exact state in `#p=…`) + **JSON preset** save/load.
 - [x] Seeded **planet names** (`nameGen.ts`), shown in the UI + used for export filenames.
+- [x] **Planetary rings** — a tilted, banded ring shell with Cassini gaps and sun lighting
+  (`RingShell.tsx` + shared `lib/rings.glsl`); enabled on the Gas Giant; exports as its own
+  transparent node in the GLB/glTF/USDZ.
 
 ### Terrain realism
 - [x] ★ **Realistic continents** — a continentality redistribution (low-freq field through a
@@ -46,15 +49,14 @@ Legend: **[x]** done · **[ ]** not yet.
 
 ## 🚧 Next
 
-- [ ] ★ **Planetary rings** — a tilted ring-plane node with a radial banded alpha texture
-  (Cassini gaps), driven by the palette; exports as its own node; shines on the Gas Giant.
+- [ ] ★ **Moons & multi-body systems** — orbiting child bodies, each its own mini-planet
+  with its own seed, rendered and exported alongside the primary.
 
 ---
 
 ## 🔭 Roadmap (grouped)
 
 **Planets & bodies**
-- [ ] Moons & multi-body systems (each child its own mini-planet).
 - [ ] More archetypes: Toxic, Gaia, Tomb/Dead, Tundra, Savanna (mostly data-only on the
   terrestrial shader).
 
